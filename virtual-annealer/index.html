@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Virtual Annealing Machine - Quantum-inspired optimization powered by LOT tokens">
+  <meta name="keywords" content="Quantum Computing, Annealing, Optimization, Blockchain, LOT Token, MetaMask">
+  <title>Virtual Annealing Machine | Quantum-Inspired Optimization</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div>
+        <h1>🔬 Virtual Annealing Machine</h1>
+        <p class="text-muted">Quantum-inspired optimization powered by LOT tokens</p>
+      </div>
+      <a href="../index.html" class="back-link">← Back to Qubitchain Gateway</a>
+    </div>
+  </header>
+
+  <!-- Alert Container -->
+  <div class="container">
+    <div id="alert-container"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Wallet Connection Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Wallet Connection</h2>
+        <p class="card-subtitle">Connect your MetaMask wallet to get started</p>
+      </div>
+      
+      <div class="wallet-section">
+        <div class="wallet-info">
+          <div>
+            <span id="status-badge" class="status-badge status-disconnected">
+              <span class="status-dot"></span> Disconnected
+            </span>
+          </div>
+          <div id="wallet-info" class="hidden">
+            <div class="wallet-address" id="wallet-address">Not connected</div>
+          </div>
+        </div>
+        
+        <button id="connect-button" class="btn btn-primary btn-lg" onclick="connectWallet()">
+          Connect Wallet
+        </button>
+      </div>
+      
+      <div class="alert alert-info mt-2">
+        <span>ℹ️</span>
+        <span>
+          You need MetaMask installed and LOT tokens to use this service.
+          Make sure you're on <strong>{{CHAIN_NAME}}</strong>.
+        </span>
+      </div>
+    </section>
+
+    <!-- LOT Balance Display -->
+    <section class="card" id="wallet-info">
+      <div class="card-header">
+        <h2 class="card-title">LOT Token Balance</h2>
+        <p class="card-subtitle">Your available LOT tokens</p>
+      </div>
+      
+      <div class="wallet-info">
+        <div class="balance-label">Available Balance</div>
+        <div class="wallet-balance" id="lot-balance">0.00 LOT</div>
+      </div>
+      
+      <div class="alert alert-warning mt-2">
+        <span>⚡</span>
+        <span>
+          Each annealing run costs <strong>{{ANNEALING_COST}} LOT</strong> tokens.
+          Make sure you have sufficient balance.
+        </span>
+      </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section class="card hidden" id="pay-section">
+      <div class="card-header">
+        <h2 class="card-title">Run Annealing Computation</h2>
+        <p class="card-subtitle">Pay LOT tokens to execute virtual annealing</p>
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.125rem; margin-bottom: 0.75rem;">What is Simulated Annealing?</h3>
+        <p class="text-muted" style="line-height: 1.8;">
+          Simulated Annealing is a quantum-inspired optimization algorithm that finds the minimum energy
+          configuration of a system. It's based on the Ising model where spins (±1) interact with each other.
+          This technique is used in quantum computers and has applications in optimization, machine learning,
+          and combinatorial problems.
+        </p>
+      </div>
+      
+      <div class="alert alert-info mb-2">
+        <span>💡</span>
+        <div>
+          <strong>How it works:</strong>
+          <ol style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+            <li>Pay {{ANNEALING_COST}} LOT tokens to unlock one computation</li>
+            <li>Configure annealing parameters (spins, temperature, steps)</li>
+            <li>Run the computation in your browser</li>
+            <li>View results and energy minimization visualization</li>
+          </ol>
+        </div>
+      </div>
+      
+      <button id="pay-button" class="btn btn-success btn-lg" onclick="payWithLOT()">
+        ⚡ Run Annealing ({{ANNEALING_COST}} LOT)
+      </button>
+    </section>
+
+    <!-- Annealing Parameter Panel -->
+    <section class="card hidden" id="annealing-panel">
+      <div class="card-header">
+        <h2 class="card-title">Annealing Parameters</h2>
+        <p class="card-subtitle">Configure your optimization run</p>
+      </div>
+      
+      <div class="alert alert-success mb-2">
+        <span>✅</span>
+        <span>Payment confirmed! Configure parameters and start annealing.</span>
+      </div>
+      
+      <div class="input-group">
+        <div class="form-group">
+          <label class="form-label" for="spin-count">Number of Spins (N)</label>
+          <input type="number" id="spin-count" class="form-input" min="2" max="100" value="10">
+          <span class="input-hint">Number of variables in the Ising model (2-100)</span>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="initial-temp">Initial Temperature (T₀)</label>
+          <input type="number" id="initial-temp" class="form-input" min="0" step="0.1" value="100">
+          <span class="input-hint">Starting temperature for annealing</span>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <div class="form-group">
+          <label class="form-label" for="cooling-rate">Cooling Rate (α)</label>
+          <input type="number" id="cooling-rate" class="form-input" min="0" max="1" step="0.01" value="0.95">
+          <span class="input-hint">Temperature reduction factor (0 < α < 1)</span>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="steps">Number of Steps</label>
+          <input type="number" id="steps" class="form-input" min="100" max="100000" step="100" value="1000">
+          <span class="input-hint">Total annealing iterations</span>
+        </div>
+      </div>
+      
+      <button id="run-annealing-button" class="btn btn-primary btn-lg" onclick="runAnnealing()">
+        🚀 Start Annealing
+      </button>
+    </section>
+
+    <!-- Progress Display -->
+    <section class="card hidden" id="progress-container">
+      <div class="card-header">
+        <h2 class="card-title">Computation Progress</h2>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-text">
+          <span id="progress-text">Initializing...</span>
+          <span id="progress-energy">Energy: --</span>
+        </div>
+      </div>
+      
+      <div class="alert alert-info mt-2">
+        <span>⏳</span>
+        <span>Annealing computation is running in your browser. This may take a few moments...</span>
+      </div>
+    </section>
+
+    <!-- Result Panel -->
+    <section class="card hidden" id="result-panel">
+      <div class="card-header">
+        <h2 class="card-title">Annealing Results</h2>
+        <p class="card-subtitle">Optimization results and spin configuration</p>
+      </div>
+      
+      <div class="alert alert-success mb-2">
+        <span>✅</span>
+        <span>Annealing completed successfully!</span>
+      </div>
+      
+      <!-- Summary Statistics -->
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="result-label">Final Energy</div>
+          <div class="result-value" id="final-energy">--</div>
+        </div>
+        
+        <div class="result-item">
+          <div class="result-label">Steps Completed</div>
+          <div class="result-value" id="steps-completed">--</div>
+        </div>
+      </div>
+      
+      <!-- Spin Configuration -->
+      <div style="margin-top: 2rem;">
+        <h3 style="font-size: 1.125rem; margin-bottom: 1rem;">Optimal Spin Configuration</h3>
+        <p class="text-muted mb-1">
+          ↑ = +1 (spin up) | ↓ = -1 (spin down)
+        </p>
+        <div id="spin-grid" class="spin-grid">
+          <!-- Spins will be rendered here -->
+        </div>
+      </div>
+      
+      <!-- Energy Evolution Chart -->
+      <div style="margin-top: 2rem;">
+        <h3 style="font-size: 1.125rem; margin-bottom: 1rem;">Energy Evolution</h3>
+        <div id="energy-chart" class="chart-container">
+          <!-- Chart will be rendered here -->
+        </div>
+      </div>
+      
+      <div class="alert alert-info mt-2">
+        <span>💡</span>
+        <div>
+          <strong>Understanding the results:</strong><br>
+          The algorithm found the spin configuration with the lowest energy.
+          Lower energy means a better solution. The chart shows how energy decreased over time
+          as the temperature was lowered.
+        </div>
+      </div>
+    </section>
+
+    <!-- Information Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">About Virtual Annealing</h2>
+      </div>
+      
+      <div style="display: grid; gap: 1.5rem;">
+        <div>
+          <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">🔬 The Science</h3>
+          <p class="text-muted">
+            Simulated Annealing is inspired by the physical process of annealing in metallurgy.
+            It uses the Metropolis-Hastings algorithm to explore the solution space, accepting
+            worse solutions with decreasing probability as temperature lowers, helping avoid
+            local minima.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">⚛️ Ising Model</h3>
+          <p class="text-muted">
+            The energy function is: E = -Σ J<sub>ij</sub> s<sub>i</sub> s<sub>j</sub> - Σ h<sub>i</sub> s<sub>i</sub>
+            where s<sub>i</sub> ∈ {+1, -1} are spins, J<sub>ij</sub> are interaction strengths,
+            and h<sub>i</sub> are external fields.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">💰 Blockchain Integration</h3>
+          <p class="text-muted">
+            This system uses LOT tokens (ERC-20) for payment. Each computation requires a
+            blockchain transaction, ensuring fair usage and enabling a decentralized
+            computational marketplace.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">🚀 Applications</h3>
+          <p class="text-muted">
+            Annealing algorithms are used in: Optimization problems, Machine learning,
+            Drug discovery, Financial modeling, Logistics planning, Circuit design,
+            and many other fields requiring combinatorial optimization.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Resources</h2>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <a href="docs/README.md" class="btn btn-secondary" style="text-decoration: none;">
+          📖 Documentation
+        </a>
+        <a href="https://en.wikipedia.org/wiki/Simulated_annealing" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
+          🔗 Learn About Simulated Annealing
+        </a>
+        <a href="https://metamask.io/" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
+          🦊 Get MetaMask
+        </a>
+        <a href="../index.html" class="btn btn-secondary" style="text-decoration: none;">
+          ⚡ Qubitchain Gateway
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="text-align: center; padding: 2rem 0; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 3rem;">
+    <div class="container">
+      <p>&copy; 2025 Virtual Annealing Machine. Powered by LOT Tokens</p>
+      <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+        Quantum-inspired computing meets blockchain technology
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="annealer/anneal.js"></script>
+  <script src="app.js"></script>
+  
+  <!-- Replace placeholders with config values -->
+  <script>
+    document.body.innerHTML = document.body.innerHTML
+      .replace(/{{CHAIN_NAME}}/g, CONFIG.CHAIN_NAME)
+      .replace(/{{ANNEALING_COST}}/g, CONFIG.ANNEALING_COST);
+  </script>
+</body>
+</html>
+

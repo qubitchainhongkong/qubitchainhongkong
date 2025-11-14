@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Qubitchain Gateway - Lightning Network Powered Micro-Payment API Gateway">
+  <meta name="keywords" content="Lightning Network, Bitcoin, API Gateway, Micropayments, LNbits">
+  <title>Qubitchain Gateway ⚡ Lightning API Gateway</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1 class="logo">⚡ Qubitchain Gateway</h1>
+      <p class="subtitle">Lightning Network Powered API Gateway</p>
+      <p class="tagline">Pay-per-request API with Bitcoin Lightning ⚡</p>
+    </div>
+  </header>
+
+  <!-- Alert Container -->
+  <div class="container">
+    <div id="alert-container"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Stats Section -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">💰 Wallet Balance</div>
+        <div class="stat-value" id="wallet-balance">0 sats</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🔑 API Keys</div>
+        <div class="stat-value" id="keys-count">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">📊 Total API Calls</div>
+        <div class="stat-value" id="total-usage">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">⚡ Cost per Request</div>
+        <div class="stat-value" id="api-cost">5 sats</div>
+      </div>
+    </section>
+
+    <!-- Wallet Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">💼</span>
+          Lightning Wallet
+        </h2>
+        <button id="refresh-balance-btn" class="btn btn-secondary" onclick="handleRefreshBalance()">
+          🔄 Refresh Balance
+        </button>
+      </div>
+      
+      <div class="alert alert-info">
+        <strong>💡 Info:</strong> This wallet is connected to LNbits.
+        Each API request costs <strong>5 sats</strong>.
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">LNbits Instance URL</label>
+        <input type="text" class="input-field" value="https://legend.lnbits.com" disabled>
+      </div>
+      
+      <div class="alert alert-warning">
+        <strong>⚠️ Security Warning:</strong> 
+        NEVER expose Admin Keys on the client side in production.
+        This demo is for educational purposes only. Use proper backend infrastructure for production deployments.
+      </div>
+    </section>
+
+    <!-- API Keys Management -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🔑</span>
+          API Key Management
+        </h2>
+        <button class="btn btn-primary" onclick="handleGenerateApiKey()">
+          ➕ Generate API Key
+        </button>
+      </div>
+      
+      <div id="api-keys-list">
+        <!-- API Keys will be rendered here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Test API Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🧪</span>
+          Test API
+        </h2>
+      </div>
+      
+      <p class="text-muted mb-2">
+        Test the Hello API endpoint. A Lightning Invoice will be generated and you'll receive a response after payment.
+      </p>
+      
+      <div class="input-group">
+        <label class="input-label" for="test-api-key">API Key</label>
+        <input 
+          type="text" 
+          id="test-api-key" 
+          class="input-field" 
+          placeholder="qbhk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        >
+      </div>
+      
+      <button id="test-api-btn" class="btn btn-primary" onclick="handleTestAPI()">
+        ⚡ Test API Call (5 sats)
+      </button>
+      
+      <!-- Invoice Display Area -->
+      <div id="invoice-display" class="mt-2"></div>
+      
+      <!-- API Result Display Area -->
+      <div id="api-result" class="mt-2"></div>
+    </section>
+
+    <!-- API Documentation Link -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">📚</span>
+          API Documentation
+        </h2>
+      </div>
+      
+      <p class="text-muted mb-2">
+        View comprehensive documentation for the Qubitchain Gateway API, including endpoints, examples, and integration guides.
+      </p>
+      
+      <a href="docs/api.html" class="btn btn-secondary">
+        📖 View API Documentation
+      </a>
+    </section>
+
+    <!-- Virtual Annealing Machine -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🔬</span>
+          Virtual Annealing Machine
+        </h2>
+      </div>
+      
+      <p class="text-muted mb-2">
+        Experience quantum-inspired optimization with our Virtual Annealing Machine. 
+        Pay with LOT tokens (ERC-20) via MetaMask to run simulated annealing computations 
+        for solving complex optimization problems using the Ising model.
+      </p>
+      
+      <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 0.5rem; align-items: start;">
+          <span style="font-size: 1.5rem;">⚛️</span>
+          <div>
+            <strong style="color: var(--text-primary);">Quantum-Inspired Computing</strong>
+            <p class="text-muted" style="margin-top: 0.25rem; font-size: 0.875rem;">
+              Simulated annealing algorithm for energy minimization and combinatorial optimization
+            </p>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 0.5rem; align-items: start;">
+          <span style="font-size: 1.5rem;">💰</span>
+          <div>
+            <strong style="color: var(--text-primary);">Blockchain Payment</strong>
+            <p class="text-muted" style="margin-top: 0.25rem; font-size: 0.875rem;">
+              Pay with LOT tokens via MetaMask - 10 LOT per computation run
+            </p>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 0.5rem; align-items: start;">
+          <span style="font-size: 1.5rem;">🖥️</span>
+          <div>
+            <strong style="color: var(--text-primary);">Browser-Based Execution</strong>
+            <p class="text-muted" style="margin-top: 0.25rem; font-size: 0.875rem;">
+              All computations run locally in your browser - no backend required
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <a href="virtual-annealer/index.html" class="btn btn-primary" style="text-decoration: none;">
+        🚀 Launch Virtual Annealer
+      </a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">✨</span>
+          Features
+        </h2>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div>
+          <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">⚡ Lightning Fast</h3>
+          <p class="text-muted">
+            Instant payment confirmation via Lightning Network. API requests complete in seconds.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--accent-color); margin-bottom: 0.5rem;">💰 Micropayments</h3>
+          <p class="text-muted">
+            Ultra-low cost at just 5 sats per request. Perfect for micropayment use cases.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--secondary-color); margin-bottom: 0.5rem;">🔒 Secure</h3>
+          <p class="text-muted">
+            API Key-based access control. Secure payments backed by Lightning Network cryptography.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">🌐 Decentralized</h3>
+          <p class="text-muted">
+            Runs entirely on the decentralized Bitcoin Lightning Network.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--accent-color); margin-bottom: 0.5rem;">📊 Usage Tracking</h3>
+          <p class="text-muted">
+            Track usage and billing history for each API Key in real-time.
+          </p>
+        </div>
+        
+        <div>
+          <h3 style="color: var(--secondary-color); margin-bottom: 0.5rem;">🚀 Easy Integration</h3>
+          <p class="text-muted">
+            Simple REST API. Integrate with your existing applications effortlessly.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🔄</span>
+          How It Works
+        </h2>
+      </div>
+      
+      <div style="display: grid; gap: 1.5rem;">
+        <div style="display: flex; gap: 1rem; align-items: start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(0,255,136,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+            1️⃣
+          </div>
+          <div>
+            <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Generate API Key</h3>
+            <p class="text-muted">
+              Click the "Generate API Key" button to create a new API Key.
+              Use this key to access the API.
+            </p>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; align-items: start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(0,212,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+            2️⃣
+          </div>
+          <div>
+            <h3 style="color: var(--accent-color); margin-bottom: 0.5rem;">Make API Request</h3>
+            <p class="text-muted">
+              Send a request to the API endpoint with your API Key.
+              A Lightning Invoice will be generated for each request.
+            </p>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; align-items: start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(255,0,128,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+            3️⃣
+          </div>
+          <div>
+            <h3 style="color: var(--secondary-color); margin-bottom: 0.5rem;">Pay with Lightning</h3>
+            <p class="text-muted">
+              Pay the invoice using your Lightning wallet (Phoenix, Muun, Blue Wallet, etc.).
+              Simply scan the QR code to complete payment.
+            </p>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; align-items: start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(0,255,136,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+            4️⃣
+          </div>
+          <div>
+            <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Receive Response</h3>
+            <p class="text-muted">
+              Once payment is confirmed, the API response is instantly returned.
+              All transactions are securely processed on the Lightning Network.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🚀</span>
+          Quick Start
+        </h2>
+      </div>
+      
+      <ol style="padding-left: 1.5rem; color: var(--text-secondary); line-height: 2;">
+        <li><strong style="color: var(--text-primary);">Setup LNbits:</strong> Create a wallet at <a href="https://legend.lnbits.com" target="_blank" style="color: var(--accent-color);">legend.lnbits.com</a></li>
+        <li><strong style="color: var(--text-primary);">Configure API Keys:</strong> Add your LNbits Invoice Key and Admin Key to config.js</li>
+        <li><strong style="color: var(--text-primary);">Generate API Key:</strong> Click "Generate API Key" button above</li>
+        <li><strong style="color: var(--text-primary);">Test:</strong> Try the "Test API" section to make your first request</li>
+        <li><strong style="color: var(--text-primary);">Integrate:</strong> Integrate the API into your application</li>
+      </ol>
+      
+      <div class="alert alert-info mt-2">
+        <strong>💡 Tip:</strong> For testing, use
+        <a href="https://testnet.lnbits.com" target="_blank" style="color: var(--accent-color);">testnet.lnbits.com</a>
+        to get free testnet Bitcoin.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Qubitchain Gateway. Powered by Lightning Network ⚡</p>
+      <div class="footer-links">
+        <a href="https://lightning.network/" target="_blank" class="footer-link">Lightning Network</a>
+        <a href="https://lnbits.com/" target="_blank" class="footer-link">LNbits</a>
+        <a href="https://bitcoin.org/" target="_blank" class="footer-link">Bitcoin</a>
+        <a href="docs/api.html" class="footer-link">API Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

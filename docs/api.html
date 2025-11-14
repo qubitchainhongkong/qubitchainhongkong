@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Qubitchain Gateway API Documentation - Lightning Network API の使い方">
+  <title>API Documentation | Qubitchain Gateway</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles.css">
+  
+  <style>
+    .docs-nav {
+      position: sticky;
+      top: 20px;
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .docs-nav h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .docs-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .docs-nav li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .docs-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+      display: block;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+    
+    .docs-nav a:hover {
+      color: var(--primary-color);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .docs-content {
+      flex: 1;
+    }
+    
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    
+    .endpoint {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .method {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+    
+    .method-get {
+      background: rgba(0, 255, 136, 0.2);
+      color: var(--primary-color);
+    }
+    
+    .method-post {
+      background: rgba(0, 212, 255, 0.2);
+      color: var(--accent-color);
+    }
+    
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    
+    .param-table th,
+    .param-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .param-table th {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .param-table td:first-child {
+      color: var(--accent-color);
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .docs-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .docs-nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1 class="logo">⚡ Qubitchain Gateway</h1>
+      <p class="subtitle">API Documentation</p>
+      <p class="tagline">
+        <a href="../index.html" style="color: var(--accent-color); text-decoration: none;">
+          ← Back to Dashboard
+        </a>
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="docs-layout">
+      
+      <!-- Navigation -->
+      <aside class="docs-nav">
+        <h3>📚 目次</h3>
+        <ul>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#authentication">Authentication</a></li>
+          <li><a href="#endpoints">Endpoints</a></li>
+          <li><a href="#payment-flow">Payment Flow</a></li>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="#error-handling">Error Handling</a></li>
+          <li><a href="#rate-limits">Rate Limits</a></li>
+          <li><a href="#sdk">SDKs & Libraries</a></li>
+        </ul>
+      </aside>
+
+      <!-- Documentation Content -->
+      <div class="docs-content">
+        
+        <!-- Introduction -->
+        <section id="introduction" class="card">
+          <h2 class="card-title">📖 Introduction</h2>
+          <p class="text-muted">
+            Qubitchain Gateway は、Lightning Network を使用したマイクロ課金 API Gateway です。
+            各 API リクエストごとに Bitcoin Lightning Network を通じて支払いが行われます。
+          </p>
+          
+          <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">主な特徴</h3>
+          <ul style="color: var(--text-secondary); line-height: 2;">
+            <li><strong style="color: var(--text-primary);">即座の支払い確認:</strong> Lightning Network による数秒での決済完了</li>
+            <li><strong style="color: var(--text-primary);">マイクロペイメント:</strong> 1リクエストあたり 5 sats という超低コスト</li>
+            <li><strong style="color: var(--text-primary);">シンプルな統合:</strong> REST API による簡単な実装</li>
+            <li><strong style="color: var(--text-primary);">リアルタイム追跡:</strong> 使用状況と課金履歴の即時確認</li>
+          </ul>
+          
+          <div class="alert alert-info mt-2">
+            <strong>💡 Note:</strong> 
+            このAPIは LNbits を使用して実装されています。
+            本番環境で使用する前に、適切なセキュリティ対策を実施してください。
+          </div>
+        </section>
+
+        <!-- Authentication -->
+        <section id="authentication" class="card">
+          <h2 class="card-title">🔐 Authentication</h2>
+          <p class="text-muted">
+            すべての API リクエストには API Key が必要です。
+            API Key は Dashboard で生成できます。
+          </p>
+          
+          <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">API Key の取得</h3>
+          <ol style="color: var(--text-secondary); line-height: 2; padding-left: 1.5rem;">
+            <li><a href="../index.html" style="color: var(--accent-color);">Dashboard</a> にアクセス</li>
+            <li>「Generate API Key」ボタンをクリック</li>
+            <li>生成された API Key をコピーして安全に保管</li>
+          </ol>
+          
+          <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">API Key の使用方法</h3>
+          <p class="text-muted mb-1">API Key は URL のクエリパラメータとして渡します:</p>
+          
+          <div class="code-block">
+            <code>https://your-gateway.com/api/endpoint?key=YOUR_API_KEY</code>
+          </div>
+          
+          <div class="alert alert-warning mt-2">
+            <strong>⚠️ Security:</strong> 
+            API Key は秘密情報です。他人と共有したり、公開リポジトリにコミットしないでください。
+          </div>
+        </section>
+
+        <!-- Endpoints -->
+        <section id="endpoints" class="card">
+          <h2 class="card-title">🔌 Endpoints</h2>
+          
+          <!-- Hello API -->
+          <div class="endpoint">
+            <h3>
+              <span class="method method-get">GET</span>
+              /api/hello
+            </h3>
+            <p class="text-muted mb-1">
+              シンプルな Hello World エンドポイント。API のテストに最適です。
+            </p>
+            
+            <h4 style="color: var(--accent-color); margin-top: 1.5rem; margin-bottom: 0.5rem;">Parameters</h4>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Required</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>key</td>
+                  <td>string</td>
+                  <td>Yes</td>
+                  <td>Your API Key</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h4 style="color: var(--accent-color); margin-top: 1.5rem; margin-bottom: 0.5rem;">Response</h4>
+            <div class="code-block">
+<pre>{
+  "success": true,
+  "message": "Hello from Qubitchain Gateway! ⚡",
+  "credits_charged": 5,
+  "timestamp": "2025-11-14T10:30:00.000Z",
+  "api_key_id": "uuid-here"
+}</pre>
+            </div>
+            
+            <h4 style="color: var(--accent-color); margin-top: 1.5rem; margin-bottom: 0.5rem;">Cost</h4>
+            <div class="alert alert-info">
+              <strong>⚡ 5 sats</strong> per request
+            </div>
+          </div>
+
+          <!-- More Endpoints -->
+          <div class="alert alert-info">
+            <strong>🚧 Coming Soon:</strong> 
+            より多くの API エンドポイントを追加予定です。
+            カスタムエンドポイントの追加方法については app.js を参照してください。
+          </div>
+        </section>
+
+        <!-- Payment Flow -->
+        <section id="payment-flow" class="card">
+          <h2 class="card-title">💸 Payment Flow</h2>
+          <p class="text-muted mb-2">
+            Qubitchain Gateway は以下のフローで支払いを処理します:
+          </p>
+          
+          <div style="display: grid; gap: 1.5rem;">
+            <div style="display: flex; gap: 1rem; align-items: start;">
+              <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(0,255,136,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                1️⃣
+              </div>
+              <div>
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">API Request</h3>
+                <p class="text-muted">
+                  クライアントが API Key を含めて API エンドポイントにリクエストを送信します。
+                </p>
+                <div class="code-block" style="margin-top: 0.5rem;">
+                  <code>GET /api/hello?key=qbhk_xxx</code>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: start;">
+              <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(0,212,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                2️⃣
+              </div>
+              <div>
+                <h3 style="color: var(--accent-color); margin-bottom: 0.5rem;">Invoice Generation</h3>
+                <p class="text-muted">
+                  システムが LNbits API を使用して Lightning Invoice を生成します。
+                  Invoice には QR コードと payment request が含まれます。
+                </p>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: start;">
+              <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(255,0,128,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                3️⃣
+              </div>
+              <div>
+                <h3 style="color: var(--secondary-color); margin-bottom: 0.5rem;">Payment</h3>
+                <p class="text-muted">
+                  ユーザーが Lightning ウォレットで Invoice を支払います。
+                  QR コードをスキャンするか、payment request をコピーして使用します。
+                </p>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: start;">
+              <div style="flex-shrink: 0; width: 40px; height: 40px; background: rgba(0,255,136,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                4️⃣
+              </div>
+              <div>
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Confirmation & Response</h3>
+                <p class="text-muted">
+                  支払いが確認されると、システムが API レスポンスを返します。
+                  通常、支払い確認は数秒以内に完了します。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Examples -->
+        <section id="examples" class="card">
+          <h2 class="card-title">💻 Code Examples</h2>
+          
+          <!-- JavaScript Example -->
+          <h3 style="color: var(--primary-color); margin-bottom: 1rem;">JavaScript / Node.js</h3>
+          <div class="code-block">
+<pre>// Fetch API を使用
+const apiKey = 'qbhk_your_api_key_here';
+const response = await fetch(
+  `https://your-gateway.com/api/hello?key=${apiKey}`
+);
+
+const data = await response.json();
+console.log(data);
+// {
+//   "success": true,
+//   "message": "Hello from Qubitchain Gateway! ⚡",
+//   "credits_charged": 5,
+//   ...
+// }</pre>
+          </div>
+          
+          <!-- cURL Example -->
+          <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">cURL</h3>
+          <div class="code-block">
+<pre>curl -X GET \
+  "https://your-gateway.com/api/hello?key=qbhk_your_api_key_here"</pre>
+          </div>
+          
+          <!-- Python Example -->
+          <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">Python</h3>
+          <div class="code-block">
+<pre>import requests
+
+api_key = 'qbhk_your_api_key_here'
+url = f'https://your-gateway.com/api/hello?key={api_key}'
+
+response = requests.get(url)
+data = response.json()
+print(data)</pre>
+          </div>
+        </section>
+
+        <!-- Error Handling -->
+        <section id="error-handling" class="card">
+          <h2 class="card-title">❌ Error Handling</h2>
+          <p class="text-muted mb-2">
+            API は以下のエラーコードを返す可能性があります:
+          </p>
+          
+          <table class="param-table">
+            <thead>
+              <tr>
+                <th>Status Code</th>
+                <th>Error</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>400</td>
+                <td>Bad Request</td>
+                <td>リクエストパラメータが不正です</td>
+              </tr>
+              <tr>
+                <td>401</td>
+                <td>Unauthorized</td>
+                <td>API Key が無効または欠落しています</td>
+              </tr>
+              <tr>
+                <td>402</td>
+                <td>Payment Required</td>
+                <td>支払いが必要ですが完了していません</td>
+              </tr>
+              <tr>
+                <td>408</td>
+                <td>Request Timeout</td>
+                <td>支払いがタイムアウトしました</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal Server Error</td>
+                <td>サーバーエラーが発生しました</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">Error Response Format</h3>
+          <div class="code-block">
+<pre>{
+  "success": false,
+  "error": "Unauthorized",
+  "message": "Invalid API Key",
+  "code": 401
+}</pre>
+          </div>
+        </section>
+
+        <!-- Rate Limits -->
+        <section id="rate-limits" class="card">
+          <h2 class="card-title">⏱️ Rate Limits</h2>
+          <p class="text-muted">
+            現在、レート制限は実装されていませんが、将来的に以下の制限が適用される可能性があります:
+          </p>
+          
+          <ul style="color: var(--text-secondary); line-height: 2; margin-top: 1rem;">
+            <li><strong style="color: var(--text-primary);">リクエスト数:</strong> 1 API Key あたり 100 requests/minute</li>
+            <li><strong style="color: var(--text-primary);">並行リクエスト:</strong> 最大 10 concurrent requests</li>
+            <li><strong style="color: var(--text-primary);">1日の上限:</strong> 10,000 requests/day</li>
+          </ul>
+          
+          <div class="alert alert-info mt-2">
+            <strong>💡 Note:</strong> 
+            より高い制限が必要な場合は、エンタープライズプランをご検討ください。
+          </div>
+        </section>
+
+        <!-- SDKs -->
+        <section id="sdk" class="card">
+          <h2 class="card-title">📦 SDKs & Libraries</h2>
+          <p class="text-muted mb-2">
+            以下の言語用の SDK を開発予定です:
+          </p>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <h4 style="color: var(--primary-color);">JavaScript/TypeScript</h4>
+              <p class="text-muted" style="font-size: 0.9rem;">Coming Soon</p>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <h4 style="color: var(--primary-color);">Python</h4>
+              <p class="text-muted" style="font-size: 0.9rem;">Coming Soon</p>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <h4 style="color: var(--primary-color);">Go</h4>
+              <p class="text-muted" style="font-size: 0.9rem;">Coming Soon</p>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <h4 style="color: var(--primary-color);">Rust</h4>
+              <p class="text-muted" style="font-size: 0.9rem;">Coming Soon</p>
+            </div>
+          </div>
+          
+          <div class="alert alert-info mt-2">
+            <strong>🚀 Contribute:</strong> 
+            SDK の開発に協力したい方は、GitHub リポジトリをご覧ください。
+          </div>
+        </section>
+
+        <!-- Support -->
+        <section class="card">
+          <h2 class="card-title">💬 Support & Resources</h2>
+          
+          <div style="display: grid; gap: 1rem; margin-top: 1.5rem;">
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">📚 Documentation</h4>
+                <p class="text-muted" style="font-size: 0.9rem;">完全なドキュメントとガイド</p>
+              </div>
+              <a href="../index.html" class="btn btn-secondary btn-small">View</a>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">⚡ Lightning Network</h4>
+                <p class="text-muted" style="font-size: 0.9rem;">Lightning Network について学ぶ</p>
+              </div>
+              <a href="https://lightning.network/" target="_blank" class="btn btn-secondary btn-small">Learn</a>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="color: var(--secondary-color); margin-bottom: 0.5rem;">🔧 LNbits</h4>
+                <p class="text-muted" style="font-size: 0.9rem;">LNbits の詳細情報</p>
+              </div>
+              <a href="https://lnbits.com/" target="_blank" class="btn btn-secondary btn-small">Visit</a>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Qubitchain Gateway. Powered by Lightning Network ⚡</p>
+      <div class="footer-links">
+        <a href="../index.html" class="footer-link">Dashboard</a>
+        <a href="https://lightning.network/" target="_blank" class="footer-link">Lightning Network</a>
+        <a href="https://lnbits.com/" target="_blank" class="footer-link">LNbits</a>
+        <a href="https://bitcoin.org/" target="_blank" class="footer-link">Bitcoin</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
