@@ -1,0 +1,22 @@
+Qubit Chain Hong Kong - Digital NFT Collection
+==============================================
+
+🖼️ SAMPLE PRODUCT FILE 🖼️
+
+This is a placeholder for an NFT collection.
+In production, this would be a ZIP containing:
+- High-resolution artwork files
+- Metadata JSON files
+- License information
+- Collection description
+
+---
+
+Product: Digital NFT Collection
+Price: 1000 sats
+File Type: ZIP Archive (in production)
+
+---
+
+Replace this with your actual NFT collection files.
+

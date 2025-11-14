@@ -1,0 +1,28 @@
+Qubit Chain Hong Kong - Trading Bot Configuration
+==================================================
+
+🤖 SAMPLE PRODUCT FILE 🤖
+
+This is a placeholder configuration file.
+In production, this would be a JSON file with actual trading bot settings.
+
+Example structure:
+{
+  "strategy": "grid_trading",
+  "pair": "BTC/USDT",
+  "grid_levels": 10,
+  "min_price": 30000,
+  "max_price": 50000,
+  "order_size": 0.001
+}
+
+---
+
+Product: Trading Bot Configuration
+Price: 500 sats
+File Type: JSON (in production)
+
+---
+
+Replace this with your actual trading bot configuration file.
+

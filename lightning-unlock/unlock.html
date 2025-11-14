@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pay with Lightning to unlock your digital file">
+  <title>Pay & Unlock | Qubit Chain Hong Kong</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <h1>⚡ Qubit Chain Hong Kong</h1>
+      <p class="subtitle">Lightning Pay-To-Unlock</p>
+      <p class="tagline"><a href="index.html" style="color: var(--text-secondary); text-decoration: none;">← Back to Store</a></p>
+    </div>
+  </header>
+
+  <!-- Alert Container -->
+  <div id="alert-container"></div>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Product Section -->
+    <section id="product-section" class="card">
+      <div class="card-header">
+        <h2 class="card-title">📦 Product Details</h2>
+      </div>
+      
+      <div class="product-info">
+        <h3 id="product-name" style="font-size: 1.75rem; margin-bottom: 0.5rem;">Loading...</h3>
+        <p id="product-description" class="text-muted mb-2">Loading product information...</p>
+        
+        <div class="product-detail">
+          <span class="product-label">Price</span>
+          <span id="product-price" class="product-value">-- sats</span>
+        </div>
+        
+        <div class="product-detail">
+          <span class="product-label">File Type</span>
+          <span id="product-type" class="product-value">--</span>
+        </div>
+        
+        <div class="product-detail">
+          <span class="product-label">File Size</span>
+          <span id="product-size" class="product-value">--</span>
+        </div>
+      </div>
+      
+      <div class="info-box mt-2">
+        <p><strong>How it works:</strong></p>
+        <p>
+          Click "Generate Invoice" → Pay with your Lightning wallet → Download unlocks automatically!
+        </p>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <button id="generate-invoice-btn" class="btn btn-primary btn-large">
+          ⚡ Generate Invoice
+        </button>
+      </div>
+    </section>
+
+    <!-- Invoice Section -->
+    <section id="invoice-section" class="card hidden">
+      <div class="card-header">
+        <h2 class="card-title">💳 Lightning Invoice</h2>
+      </div>
+      
+      <div class="invoice-container">
+        <p class="text-muted mb-2">Scan this QR code with your Lightning wallet to pay</p>
+        
+        <div class="qr-code-wrapper">
+          <img id="qr-code" class="qr-code" src="" alt="Lightning Invoice QR Code">
+        </div>
+        
+        <div class="invoice-amount">
+          Amount: <span id="invoice-amount">0 sats</span>
+        </div>
+        
+        <div class="invoice-text-container">
+          <label for="invoice-text" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+            Or copy the invoice:
+          </label>
+          <textarea id="invoice-text" class="invoice-text" readonly></textarea>
+        </div>
+        
+        <button id="copy-invoice-btn" class="btn btn-secondary mt-1">
+          📋 Copy Invoice
+        </button>
+      </div>
+      
+      <div id="payment-status" class="payment-status waiting">
+        Waiting for payment...
+      </div>
+      
+      <div class="info-box">
+        <p><strong>Need a Lightning wallet?</strong></p>
+        <p>
+          Get <a href="https://phoenix.acinq.co/" target="_blank" style="color: var(--primary-color);">Phoenix</a>,
+          <a href="https://muun.com/" target="_blank" style="color: var(--primary-color);">Muun</a>, or
+          <a href="https://bluewallet.io/" target="_blank" style="color: var(--primary-color);">Blue Wallet</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Unlock Section -->
+    <section id="unlock-section" class="card hidden">
+      <div class="card-header">
+        <h2 class="card-title">🎉 Payment Confirmed!</h2>
+      </div>
+      
+      <div class="unlock-message">
+        <div class="unlock-icon">🔓</div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Your File is Ready!</h3>
+        <p class="text-muted">
+          Payment confirmed successfully. You can now download your file.
+        </p>
+      </div>
+      
+      <div class="download-container">
+        <a id="download-btn" href="#" class="btn btn-success btn-large">
+          📥 Download File
+        </a>
+      </div>
+      
+      <div class="info-box mt-2">
+        <p><strong>Thank you for your purchase!</strong></p>
+        <p>
+          Your download link is now active. The file will start downloading when you click the button above.
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <a href="index.html" style="color: var(--primary-color);">← Return to store</a> to browse more products.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Qubit Chain Hong Kong. Powered by Lightning Network ⚡</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="js/lnbits.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+

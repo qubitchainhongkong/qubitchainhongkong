@@ -1,0 +1,26 @@
+Qubit Chain Hong Kong - SAT Study Guide 2025
+=============================================
+
+📚 SAMPLE PRODUCT FILE 📚
+
+Congratulations! Your payment was successful.
+
+This is a placeholder file for demonstration purposes.
+In a real deployment, this would be a comprehensive PDF containing:
+- SAT test strategies
+- Practice questions
+- Answer explanations
+- Study schedules
+- Tips and tricks
+
+---
+
+Product: SAT Study Guide 2025
+Price: 150 sats
+File Type: PDF (in production)
+
+---
+
+Thank you for your purchase!
+Replace this with your actual SAT study materials.
+
